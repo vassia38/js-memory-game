@@ -1,0 +1,22 @@
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.board {
+    display: flex;
+    flex-wrap:wrap;
+    width: 408px;
+    justify-content: center;
+    align-items: center;
+}
+.square {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-basis: calc(100% / 4 - 2px);
+    border: 1px solid black;
+    height: 100px;
+    width: 100px;
+}

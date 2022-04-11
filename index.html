@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div class="board">
+
+        </div>
+    </body>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = [];
+            for( let i = 0; i < 8; i++) {
+                const name = "img" + i + ".jpg"
+                cards.push({value: i, img: name});
+                cards.push({value: i, img: name});
+            }
+            const board = document.querySelector('.board');
+            function createBoard() {
+                var positions = new Set()
+                while(positions.size < 16) {
+                    let x = Math.floor(Math.random() * 16);
+                    positions.add(x)
+                }
+                for( let i of positions.values()) {
+                    var square = document.createElement('div');
+                    square.setAttribute('class', 'square');
+                    square.addEventListener('click', flipSquare)
+    // CONTENT GOES HERE
+                    // content = number
+                    //var content = document.createElement('p');
+                    //content.innerHTML = cards[i].value;
+
+                    // content = img
+                    var content = document.createElement('img');
+                    content.src = cards[i].img;
+                    content.style.display = "none";
+
+                    square.appendChild(content);
+                    square.value = cards[i].value;
+                    board.appendChild(square);
+                }
+            }
+            createBoard()
+        })
+
+        const chosenSquares = [];
+        var score = 0;
+        var tries = 0;
+
+        function checkSquares() {
+            console.log('checking...')
+            tries++;
+            if(chosenSquares[0].value == chosenSquares[1].value) {
+                chosenSquares[0].style.backgroundColor = "lightgreen";
+                chosenSquares[1].style.backgroundColor = "lightgreen";
+                chosenSquares[0].removeEventListener('click', flipSquare);
+                chosenSquares[1].removeEventListener('click', flipSquare);
+                score++;
+                if(score == 8) {
+                    finish();
+                }
+            }
+            else {
+                console.log('different')
+                let content = chosenSquares[0].firstChild;
+                content.style.display = "none";
+                content = chosenSquares[1].firstChild;
+                content.style.display = "none";
+            }
+            chosenSquares.pop();
+            chosenSquares.pop();
+        }
+
+        function flipSquare() {
+            var value = this.value;
+            if(chosenSquares.length < 2 && chosenSquares[0] != this) {
+                chosenSquares.push(this)
+                let content = this.firstChild;
+                content.style.display = "block";
+                console.log(content);
+                if(chosenSquares.length == 2) {
+                    setTimeout( checkSquares, 1000)
+                }
+            }
+        }
+
+        function finish() {
+            let msg = "Congratulations! You've completed the game in " + tries + " tries";
+            const body = document.querySelector('body');
+            const par = document.createElement('p');
+            par.innerHTML = msg;
+            body.appendChild(par);
+        }
+    </script>
+</html>
